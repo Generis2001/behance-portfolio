@@ -1,6 +1,6 @@
 import React from 'react';
 import type { Project } from '../data/projects';
-import { X, ExternalLink, Heart, ChevronLeft, ChevronRight, CheckCircle, Code2, Cpu } from 'lucide-react';
+import { X, ExternalLink, Heart, ChevronLeft, ChevronRight, CheckCircle, Code2, Cpu, ArrowUpRight } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { GithubIcon } from './Icons';
 
@@ -24,210 +24,128 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({
   if (!project) return null;
 
   const handleHeartClick = (e: React.MouseEvent) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = (rect.left + rect.width / 2) / window.innerWidth;
-    const y = (rect.top + rect.height / 2) / window.innerHeight;
-    
+    const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
     confetti({
-      particleCount: 35,
-      spread: 70,
-      origin: { x, y },
-      colors: ['#ff2a85', '#0057ff', '#00f0ff', '#8b5cf6']
+      particleCount: 30,
+      spread: 65,
+      origin: { x: (rect.left + rect.width / 2) / window.innerWidth, y: (rect.top + rect.height / 2) / window.innerHeight },
+      colors: ['#e0365a', '#1769ff', '#7c3aed']
     });
-
     onToggleLike(project.id, e);
   };
 
-  const appreciationCount = project.appreciations + (isLiked ? 1 : 0);
+  const likesCount = project.appreciations + (isLiked ? 1 : 0);
 
   return (
     <div className="modal-overlay" onClick={onClose}>
-      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-        {/* Modal Top Header Bar */}
+      <div className="modal-box" onClick={(e) => e.stopPropagation()}>
+        {/* Sticky modal header */}
         <div style={{
-          position: 'sticky',
-          top: 0,
-          background: 'rgba(15, 19, 29, 0.95)',
-          backdropFilter: 'blur(12px)',
-          padding: '16px 28px',
-          borderBottom: '1px solid var(--border-color)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          zIndex: 10
+          position: 'sticky', top: 0, zIndex: 10,
+          background: 'rgba(255,255,255,0.97)', backdropFilter: 'blur(10px)',
+          borderBottom: '1px solid var(--border)',
+          padding: '14px 24px',
+          display: 'flex', alignItems: 'center', gap: '12px',
         }}>
-          {/* Title & Navigation */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-            <button
-              onClick={onPrevProject}
-              className="btn-secondary"
-              style={{ padding: '6px', borderRadius: '50%' }}
-              title="Previous Project"
-            >
-              <ChevronLeft size={18} />
-            </button>
-            <button
-              onClick={onNextProject}
-              className="btn-secondary"
-              style={{ padding: '6px', borderRadius: '50%' }}
-              title="Next Project"
-            >
-              <ChevronRight size={18} />
-            </button>
-            <div>
-              <h2 style={{
-                fontFamily: 'var(--font-heading)',
-                fontSize: '1.2rem',
-                fontWeight: 700,
-                color: '#fff',
-                lineHeight: 1.2
-              }}>
-                {project.title}
-              </h2>
-              <span style={{ fontSize: '0.8rem', color: '#60a5fa', fontFamily: 'var(--font-heading)' }}>
-                {project.subtitle}
-              </span>
-            </div>
+          {/* Nav arrows */}
+          <button className="btn-ghost" onClick={onPrevProject} style={{ padding: '6px' }} title="Previous project">
+            <ChevronLeft size={18} />
+          </button>
+          <button className="btn-ghost" onClick={onNextProject} style={{ padding: '6px' }} title="Next project">
+            <ChevronRight size={18} />
+          </button>
+
+          {/* Title */}
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <h2 style={{ fontFamily: 'var(--font-heading)', fontWeight: 700, fontSize: '1.05rem', color: 'var(--text)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+              {project.title}
+            </h2>
+            <span style={{ fontSize: '0.78rem', color: 'var(--blue)', fontFamily: 'var(--font-heading)', fontWeight: 600 }}>
+              {project.subtitle}
+            </span>
           </div>
 
-          {/* Top Actions */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-            <button
-              className={`heart-btn ${isLiked ? 'liked' : ''}`}
-              onClick={handleHeartClick}
-            >
-              <Heart size={16} fill={isLiked ? '#ff2a85' : 'transparent'} color={isLiked ? '#ff2a85' : 'currentColor'} />
-              <span>Appreciate ({appreciationCount})</span>
+          {/* Actions */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexShrink: 0 }}>
+            <button className={`heart-btn ${isLiked ? 'liked' : ''}`} onClick={handleHeartClick}>
+              <Heart size={15} fill={isLiked ? 'currentColor' : 'none'} />
+              Appreciate ({likesCount})
             </button>
 
             {project.liveUrl && (
-              <a
-                href={project.liveUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn-behance"
-                style={{ fontSize: '0.82rem', padding: '7px 16px' }}
-              >
-                <ExternalLink size={14} /> Live Demo
+              <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className="btn-primary" style={{ fontSize: '0.82rem', padding: '7px 16px' }}>
+                <ArrowUpRight size={14} /> Live Demo
               </a>
             )}
 
             <button
               onClick={onClose}
-              style={{
-                background: 'rgba(255,255,255,0.08)',
-                border: 'none',
-                color: 'var(--text-main)',
-                padding: '8px',
-                borderRadius: '50%',
-                cursor: 'pointer',
-                display: 'flex'
-              }}
+              style={{ background: '#f5f5f5', border: '1px solid var(--border)', borderRadius: '50%', width: '34px', height: '34px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}
+              aria-label="Close"
             >
-              <X size={20} />
+              <X size={18} />
             </button>
           </div>
         </div>
 
-        {/* Modal Scrollable Body */}
-        <div style={{ padding: '32px 36px' }}>
-          {/* Main Visual Showcase Hero Banner */}
-          <div style={{
-            borderRadius: 'var(--radius-md)',
-            overflow: 'hidden',
-            border: '1px solid var(--border-color)',
-            boxShadow: 'var(--shadow-card)',
-            marginBottom: '32px'
-          }}>
-            <img
-              src={project.image}
-              alt={project.title}
-              style={{
-                width: '100%',
-                maxHeight: '480px',
-                objectFit: 'cover',
-                display: 'block'
-              }}
-            />
-          </div>
+        {/* Modal body */}
+        <div style={{ padding: '0 0 40px 0' }}>
+          {/* Full-width hero image */}
+          <img
+            src={project.image}
+            alt={project.title}
+            style={{ width: '100%', maxHeight: '480px', objectFit: 'cover', display: 'block', background: '#f5f5f5' }}
+          />
 
-          {/* Project Details Grid Layout */}
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: '2fr 1fr',
-            gap: '36px'
-          }}>
-            {/* Left Content Area */}
+          {/* Content area */}
+          <div style={{ padding: '36px 36px 0', display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '40px' }}>
+            {/* Left */}
             <div>
-              <h3 style={{
-                fontFamily: 'var(--font-heading)',
-                fontSize: '1.4rem',
-                fontWeight: 700,
-                color: '#fff',
-                marginBottom: '12px'
-              }}>
-                Project Overview & Architecture
+              {/* Category pill */}
+              <span className={`cat-pill ${project.category}`} style={{ marginBottom: '16px', display: 'inline-flex' }}>
+                {project.categoryLabel}
+              </span>
+
+              <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.5rem', fontWeight: 800, color: 'var(--text)', marginTop: '12px', marginBottom: '12px' }}>
+                {project.title}
               </h3>
-              <p style={{
-                color: 'var(--text-muted)',
-                fontSize: '0.98rem',
-                lineHeight: 1.7,
-                marginBottom: '24px'
-              }}>
+              <p style={{ color: 'var(--text-secondary)', fontSize: '0.98rem', lineHeight: 1.75, marginBottom: '28px' }}>
                 {project.description}
               </p>
 
-              {/* Architecture Breakdown */}
-              <div style={{
-                background: 'rgba(255,255,255,0.02)',
-                border: '1px solid var(--border-color)',
-                borderRadius: 'var(--radius-md)',
-                padding: '20px 24px',
-                marginBottom: '28px'
-              }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px', color: '#60a5fa', fontWeight: 600 }}>
-                  <Cpu size={18} /> Architecture & System Design
+              {/* Architecture */}
+              <div style={{ background: '#f8f9ff', border: '1.5px solid #e0e7ff', borderRadius: 'var(--radius-md)', padding: '18px 22px', marginBottom: '28px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px', color: 'var(--blue)', fontWeight: 700, fontSize: '0.88rem', fontFamily: 'var(--font-heading)' }}>
+                  <Cpu size={16} /> Architecture
                 </div>
-                <p style={{ fontSize: '0.92rem', color: 'var(--text-main)', lineHeight: 1.6 }}>
+                <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', lineHeight: 1.65 }}>
                   {project.details.architecture}
                 </p>
               </div>
 
-              {/* Key Features List */}
-              <h4 style={{
-                fontFamily: 'var(--font-heading)',
-                fontSize: '1.15rem',
-                fontWeight: 700,
-                color: '#fff',
-                marginBottom: '14px'
-              }}>
-                Key Capabilities & Deliverables
+              {/* Features */}
+              <h4 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.05rem', fontWeight: 700, marginBottom: '14px', color: 'var(--text)' }}>
+                Key Features
               </h4>
               <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '28px' }}>
                 {project.details.features.map((feat, i) => (
-                  <li key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', color: 'var(--text-muted)', fontSize: '0.94rem' }}>
-                    <CheckCircle size={18} color="#10b981" style={{ flexShrink: 0, marginTop: '2px' }} />
-                    <span>{feat}</span>
+                  <li key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', fontSize: '0.92rem', color: 'var(--text-secondary)' }}>
+                    <CheckCircle size={16} color="var(--green)" style={{ flexShrink: 0, marginTop: '2px' }} />
+                    {feat}
                   </li>
                 ))}
               </ul>
 
-              {/* Code Snippet Preview (if available) */}
+              {/* Code snippet */}
               {project.details.codeSnippet && (
-                <div style={{ marginBottom: '28px' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '10px', color: '#a78bfa', fontWeight: 600, fontSize: '0.9rem' }}>
-                    <Code2 size={16} /> Technical Implementation Snippet
+                <div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '10px', color: 'var(--purple)', fontWeight: 700, fontSize: '0.86rem', fontFamily: 'var(--font-heading)' }}>
+                    <Code2 size={15} /> Implementation Preview
                   </div>
                   <pre style={{
-                    background: '#090c15',
-                    border: '1px solid var(--border-color)',
-                    borderRadius: 'var(--radius-md)',
-                    padding: '16px 20px',
-                    fontFamily: 'var(--font-code)',
-                    fontSize: '0.84rem',
-                    color: '#e2e8f0',
-                    overflowX: 'auto',
-                    lineHeight: 1.6
+                    background: '#1a1a2e', borderRadius: 'var(--radius-md)',
+                    padding: '18px 22px', fontFamily: 'var(--font-mono)', fontSize: '0.83rem',
+                    color: '#e2e8f0', overflowX: 'auto', lineHeight: 1.65, border: 'none'
                   }}>
                     <code>{project.details.codeSnippet}</code>
                   </pre>
@@ -235,89 +153,58 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({
               )}
             </div>
 
-            {/* Right Sidebar Metadata */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-              {/* External Links Box */}
-              <div style={{
-                background: 'var(--bg-card)',
-                border: '1px solid var(--border-color)',
-                borderRadius: 'var(--radius-md)',
-                padding: '20px',
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '12px'
-              }}>
-                <a
-                  href={project.githubUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn-secondary"
-                  style={{ width: '100%', justifyContent: 'center' }}
-                >
-                  <GithubIcon size={16} /> View GitHub Source
+            {/* Right sidebar */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
+              {/* Links */}
+              <div style={{ background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius-md)', padding: '18px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" className="btn-outline" style={{ justifyContent: 'center' }}>
+                  <GithubIcon size={15} /> Source Code
                 </a>
                 {project.liveUrl && (
-                  <a
-                    href={project.liveUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="btn-behance"
-                    style={{ width: '100%', justifyContent: 'center' }}
-                  >
-                    <ExternalLink size={16} /> Open Vercel Application
+                  <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className="btn-primary" style={{ justifyContent: 'center' }}>
+                    <ExternalLink size={15} /> Open Live App
                   </a>
                 )}
               </div>
 
-              {/* Tech Stack Pills Box */}
-              <div style={{
-                background: 'var(--bg-card)',
-                border: '1px solid var(--border-color)',
-                borderRadius: 'var(--radius-md)',
-                padding: '20px'
-              }}>
-                <h4 style={{ fontFamily: 'var(--font-heading)', fontSize: '0.95rem', fontWeight: 700, color: '#fff', marginBottom: '12px' }}>
-                  Technologies & Frameworks
-                </h4>
+              {/* Tech stack */}
+              <div style={{ background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius-md)', padding: '18px' }}>
+                <h5 style={{ fontFamily: 'var(--font-heading)', fontWeight: 700, fontSize: '0.88rem', marginBottom: '12px', color: 'var(--text)' }}>
+                  Tech Stack
+                </h5>
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
                   {project.details.techStack.map((tech, idx) => (
-                    <span
-                      key={idx}
-                      style={{
-                        background: 'rgba(0, 87, 255, 0.12)',
-                        border: '1px solid rgba(0, 87, 255, 0.25)',
-                        color: '#60a5fa',
-                        fontSize: '0.78rem',
-                        fontFamily: 'var(--font-code)',
-                        padding: '4px 10px',
-                        borderRadius: 'var(--radius-sm)'
-                      }}
-                    >
-                      {tech}
+                    <span key={idx} className="tag">{tech}</span>
+                  ))}
+                </div>
+              </div>
+
+              {/* Tags */}
+              <div style={{ background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius-md)', padding: '18px' }}>
+                <h5 style={{ fontFamily: 'var(--font-heading)', fontWeight: 700, fontSize: '0.88rem', marginBottom: '12px', color: 'var(--text)' }}>
+                  Keywords
+                </h5>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+                  {project.tags.map((tag, idx) => (
+                    <span key={idx} style={{ fontSize: '0.76rem', color: 'var(--blue)', background: 'rgba(23,105,255,0.08)', border: '1px solid rgba(23,105,255,0.18)', padding: '2px 9px', borderRadius: 'var(--radius-full)', fontFamily: 'var(--font-heading)', fontWeight: 600 }}>
+                      #{tag}
                     </span>
                   ))}
                 </div>
               </div>
 
-              {/* Metrics Stats */}
-              {project.details.stats && project.details.stats.length > 0 && (
-                <div style={{
-                  background: 'var(--bg-card)',
-                  border: '1px solid var(--border-color)',
-                  borderRadius: 'var(--radius-md)',
-                  padding: '20px'
-                }}>
-                  <h4 style={{ fontFamily: 'var(--font-heading)', fontSize: '0.95rem', fontWeight: 700, color: '#fff', marginBottom: '12px' }}>
-                    Project Specifications
-                  </h4>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                    {project.details.stats.map((stat, idx) => (
-                      <div key={idx} style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.86rem' }}>
-                        <span style={{ color: 'var(--text-dim)' }}>{stat.label}:</span>
-                        <span style={{ color: '#ffffff', fontWeight: 600, fontFamily: 'var(--font-heading)' }}>{stat.value}</span>
-                      </div>
-                    ))}
-                  </div>
+              {/* Specs */}
+              {project.details.stats.length > 0 && (
+                <div style={{ background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius-md)', padding: '18px' }}>
+                  <h5 style={{ fontFamily: 'var(--font-heading)', fontWeight: 700, fontSize: '0.88rem', marginBottom: '12px', color: 'var(--text)' }}>
+                    Specifications
+                  </h5>
+                  {project.details.stats.map((stat, idx) => (
+                    <div key={idx} style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem', padding: '4px 0', borderBottom: idx < project.details.stats.length - 1 ? '1px solid var(--border)' : 'none' }}>
+                      <span style={{ color: 'var(--text-muted)' }}>{stat.label}</span>
+                      <span style={{ color: 'var(--text)', fontWeight: 700, fontFamily: 'var(--font-heading)' }}>{stat.value}</span>
+                    </div>
+                  ))}
                 </div>
               )}
             </div>

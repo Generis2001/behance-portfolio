@@ -1,82 +1,66 @@
 import React from 'react';
 import { Heart, ExternalLink } from 'lucide-react';
-import { PROFILE_STATS } from '../data/projects';
+import { CREATOR } from '../data/projects';
 import { GithubIcon } from './Icons';
 
 export const Footer: React.FC = () => {
   return (
     <footer style={{
       background: 'var(--bg-surface)',
-      borderTop: '1px solid var(--border-color)',
-      padding: '48px 24px 32px 24px',
+      borderTop: '1px solid var(--border)',
+      padding: '36px 24px 24px',
       marginTop: '80px'
     }}>
-      <div style={{
-        maxWidth: '1440px',
-        margin: '0 auto',
+      <div className="container" style={{
         display: 'flex',
         flexWrap: 'wrap',
         alignItems: 'center',
         justifyContent: 'space-between',
-        gap: '24px'
+        gap: '20px'
       }}>
-        {/* Branding & Bio */}
+        {/* Left */}
         <div>
-          <div style={{
-            background: 'var(--behance-blue)',
-            color: '#fff',
-            fontWeight: 900,
-            fontSize: '1.1rem',
-            padding: '4px 12px',
-            borderRadius: 'var(--radius-sm)',
-            display: 'inline-flex',
-            marginBottom: '10px'
-          }}>
-            BĒ | GENERIS2001
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px' }}>
+            <img
+              src={CREATOR.avatar}
+              alt={CREATOR.name}
+              style={{ width: '28px', height: '28px', borderRadius: '50%', border: '2px solid var(--border)' }}
+            />
+            <span style={{ fontFamily: 'var(--font-heading)', fontWeight: 800, fontSize: '1rem', color: 'var(--text)' }}>
+              {CREATOR.name}
+            </span>
           </div>
-          <p style={{ color: 'var(--text-muted)', fontSize: '0.88rem', maxWidth: '400px' }}>
-            High-performance Web3 & AI dApps, GenLayer Intelligent Contracts, and Document Intelligence Oracles.
+          <p style={{ color: 'var(--text-muted)', fontSize: '0.83rem', maxWidth: '380px', lineHeight: 1.5 }}>
+            Web3 & AI Architect — GenLayer Intelligent Contracts, OKX X Layer, and high-performance blockchain frontends.
           </p>
         </div>
 
-        {/* Quick Links */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
-          <a
-            href={PROFILE_STATS.githubUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn-secondary"
-            style={{ fontSize: '0.84rem' }}
-          >
-            <GithubIcon size={16} /> GitHub Profile
+        {/* Right links */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <a href={CREATOR.githubUrl} target="_blank" rel="noopener noreferrer" className="btn-ghost">
+            <GithubIcon size={15} /> GitHub
           </a>
-          <a
-            href="https://vercel.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn-secondary"
-            style={{ fontSize: '0.84rem' }}
-          >
-            <ExternalLink size={16} /> Vercel Deployments
+          <a href={`${CREATOR.githubUrl}?tab=repositories`} target="_blank" rel="noopener noreferrer" className="btn-ghost">
+            <ExternalLink size={14} /> All Repos
           </a>
         </div>
       </div>
 
-      <div style={{
-        maxWidth: '1440px',
-        margin: '24px auto 0 auto',
-        paddingTop: '20px',
-        borderTop: '1px solid rgba(255,255,255,0.04)',
+      {/* Bottom bar */}
+      <div className="container" style={{
+        marginTop: '20px',
+        paddingTop: '16px',
+        borderTop: '1px solid var(--border)',
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
-        fontSize: '0.8rem',
-        color: 'var(--text-dim)'
+        fontSize: '0.78rem',
+        color: 'var(--text-muted)'
       }}>
-        <div>© 2026 Generis2001. Designed with Behance aesthetic standards.</div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-          Built with <Heart size={14} color="#ff2a85" fill="#ff2a85" /> using Vite, React & TypeScript
-        </div>
+        <span>© {new Date().getFullYear()} {CREATOR.name}. All rights reserved.</span>
+        <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+          Made with <Heart size={13} color="var(--pink)" fill="var(--pink)" /> using Vite & React
+        </span>
       </div>
     </footer>
   );

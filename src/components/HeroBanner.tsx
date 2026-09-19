@@ -1,191 +1,144 @@
 import React from 'react';
-import { PROFILE_STATS } from '../data/projects';
-import { CheckCircle2 } from 'lucide-react';
+import { CREATOR } from '../data/projects';
+import { MapPin, CheckCircle2, ExternalLink } from 'lucide-react';
 import { GithubIcon } from './Icons';
 
 export const HeroBanner: React.FC = () => {
   return (
-    <section style={{
-      maxWidth: '1440px',
-      margin: '24px auto 36px auto',
-      padding: '0 24px',
-    }}>
-      {/* Cover Canvas Banner */}
-      <div style={{
-        borderRadius: 'var(--radius-lg)',
-        background: 'linear-gradient(135deg, #0d1322 0%, #151b2e 50%, #0c1833 100%)',
-        border: '1px solid var(--border-color)',
-        padding: '36px 40px',
-        position: 'relative',
-        overflow: 'hidden',
-        boxShadow: 'var(--shadow-card)'
-      }}>
-        {/* Subtle Decorative Gradient Mesh Background */}
-        <div style={{
-          position: 'absolute',
-          top: '-50px',
-          right: '-50px',
-          width: '350px',
-          height: '350px',
-          background: 'radial-gradient(circle, rgba(0,87,255,0.2) 0%, transparent 70%)',
-          pointerEvents: 'none'
-        }} />
-        <div style={{
-          position: 'absolute',
-          bottom: '-50px',
-          left: '20%',
-          width: '300px',
-          height: '300px',
-          background: 'radial-gradient(circle, rgba(255,42,133,0.12) 0%, transparent 70%)',
-          pointerEvents: 'none'
-        }} />
-
+    <section style={{ borderBottom: '1px solid var(--border)', background: '#fff' }}>
+      <div className="container" style={{ padding: '36px 24px' }}>
         <div style={{
           display: 'flex',
+          alignItems: 'flex-start',
+          gap: '28px',
           flexWrap: 'wrap',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          gap: '32px',
-          position: 'relative',
-          zIndex: 2
+          justifyContent: 'space-between'
         }}>
-          {/* Creator Profile Info */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '24px', flex: '1 1 500px' }}>
-            <div style={{ position: 'relative' }}>
+          {/* Avatar + Info */}
+          <div style={{ display: 'flex', gap: '24px', alignItems: 'flex-start', flex: '1 1 400px' }}>
+            {/* Avatar */}
+            <div style={{ position: 'relative', flexShrink: 0 }}>
               <img
-                src={PROFILE_STATS.avatar}
-                alt={PROFILE_STATS.name}
+                src={CREATOR.avatar}
+                alt={CREATOR.name}
                 style={{
-                  width: '110px',
-                  height: '110px',
-                  borderRadius: 'var(--radius-full)',
-                  border: '3px solid var(--behance-blue)',
-                  boxShadow: '0 8px 25px rgba(0, 87, 255, 0.4)',
+                  width: '96px',
+                  height: '96px',
+                  borderRadius: '50%',
+                  border: '3px solid #fff',
+                  boxShadow: '0 0 0 2px var(--border), var(--shadow-card)',
                   objectFit: 'cover'
                 }}
               />
               <div style={{
-                position: 'absolute',
-                bottom: '4px',
-                right: '4px',
-                background: '#080a0f',
-                borderRadius: '50%',
-                padding: '2px',
-                display: 'flex'
+                position: 'absolute', bottom: 2, right: 2,
+                background: '#fff', borderRadius: '50%', padding: 2, display: 'flex'
               }}>
-                <CheckCircle2 size={22} color="#0057FF" fill="#0057FF" />
+                <CheckCircle2 size={18} color="var(--blue)" fill="var(--blue)" />
               </div>
             </div>
 
-            <div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                <h1 style={{
-                  fontFamily: 'var(--font-heading)',
-                  fontSize: '2.4rem',
-                  fontWeight: 800,
-                  letterSpacing: '-0.02em',
-                  color: '#ffffff',
-                  lineHeight: 1.1
-                }}>
-                  {PROFILE_STATS.name}
-                </h1>
-                <span className="pill-badge web3" style={{ fontSize: '0.72rem' }}>
-                  Pro Creator
-                </span>
+            {/* Text */}
+            <div style={{ flex: 1 }}>
+              <h1 style={{
+                fontFamily: 'var(--font-heading)',
+                fontSize: '1.9rem',
+                fontWeight: 800,
+                color: 'var(--text)',
+                letterSpacing: '-0.02em',
+                lineHeight: 1.2
+              }}>
+                {CREATOR.name}
+              </h1>
+
+              <p style={{
+                color: 'var(--text-secondary)',
+                fontWeight: 600,
+                fontSize: '0.95rem',
+                marginTop: '4px',
+                fontFamily: 'var(--font-heading)'
+              }}>
+                {CREATOR.role}
+              </p>
+
+              <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginTop: '6px', color: 'var(--text-muted)', fontSize: '0.82rem' }}>
+                <MapPin size={13} />
+                <span>{CREATOR.location}</span>
               </div>
 
               <p style={{
-                color: '#60a5fa',
-                fontFamily: 'var(--font-heading)',
-                fontSize: '1.05rem',
-                fontWeight: 600,
-                marginTop: '4px'
-              }}>
-                {PROFILE_STATS.role}
-              </p>
-
-              <p style={{
                 color: 'var(--text-muted)',
-                fontSize: '0.92rem',
-                marginTop: '8px',
-                maxWidth: '640px',
-                lineHeight: 1.5
+                fontSize: '0.88rem',
+                marginTop: '10px',
+                lineHeight: 1.6,
+                maxWidth: '600px'
               }}>
-                {PROFILE_STATS.bio}
+                {CREATOR.bio}
               </p>
 
-              {/* Skills Tags */}
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginTop: '16px' }}>
-                {PROFILE_STATS.skills.map((skill, idx) => (
-                  <span
-                    key={idx}
-                    style={{
-                      background: 'rgba(255,255,255,0.06)',
-                      border: '1px solid rgba(255,255,255,0.1)',
-                      color: 'var(--text-main)',
-                      fontSize: '0.76rem',
-                      fontFamily: 'var(--font-code)',
-                      padding: '3px 10px',
-                      borderRadius: 'var(--radius-sm)'
-                    }}
-                  >
-                    {skill}
-                  </span>
+              {/* Skill tags */}
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginTop: '14px' }}>
+                {CREATOR.skills.map((skill, idx) => (
+                  <span key={idx} className="tag">{skill}</span>
                 ))}
               </div>
             </div>
           </div>
 
-          {/* Metrics & Actions Box */}
+          {/* Stats box */}
           <div style={{
-            background: 'rgba(8, 10, 15, 0.65)',
-            backdropFilter: 'blur(10px)',
-            border: '1px solid var(--border-color)',
-            borderRadius: 'var(--radius-md)',
-            padding: '20px 24px',
+            background: 'var(--bg-surface)',
+            border: '1px solid var(--border)',
+            borderRadius: 'var(--radius-lg)',
+            padding: '24px 28px',
             display: 'flex',
             flexDirection: 'column',
-            gap: '16px',
-            minWidth: '240px'
+            gap: '20px',
+            minWidth: '240px',
+            alignSelf: 'flex-start'
           }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid var(--border-color)', paddingBottom: '12px' }}>
-              <div style={{ textAlign: 'center' }}>
-                <div style={{ fontFamily: 'var(--font-heading)', fontWeight: 800, fontSize: '1.4rem', color: '#fff' }}>
-                  13+
-                </div>
-                <div style={{ fontSize: '0.75rem', color: 'var(--text-dim)', textTransform: 'uppercase' }}>
-                  Projects
-                </div>
+            {/* Stats row */}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '16px', textAlign: 'center' }}>
+              <div>
+                <div className="stat-val">{CREATOR.totalProjects}+</div>
+                <div className="stat-label">Projects</div>
               </div>
-              <div style={{ width: '1px', background: 'var(--border-color)' }} />
-              <div style={{ textAlign: 'center' }}>
-                <div style={{ fontFamily: 'var(--font-heading)', fontWeight: 800, fontSize: '1.4rem', color: '#60a5fa' }}>
-                  38.9k
+              <div>
+                <div className="stat-val" style={{ color: 'var(--blue)' }}>
+                  {(CREATOR.totalViews / 1000).toFixed(1)}k
                 </div>
-                <div style={{ fontSize: '0.75rem', color: 'var(--text-dim)', textTransform: 'uppercase' }}>
-                  Views
-                </div>
+                <div className="stat-label">Views</div>
               </div>
-              <div style={{ width: '1px', background: 'var(--border-color)' }} />
-              <div style={{ textAlign: 'center' }}>
-                <div style={{ fontFamily: 'var(--font-heading)', fontWeight: 800, fontSize: '1.4rem', color: '#ff2a85' }}>
-                  5.4k
+              <div>
+                <div className="stat-val" style={{ color: 'var(--pink)' }}>
+                  {(CREATOR.totalAppreciations / 1000).toFixed(1)}k
                 </div>
-                <div style={{ fontSize: '0.75rem', color: 'var(--text-dim)', textTransform: 'uppercase' }}>
-                  Appreciations
-                </div>
+                <div className="stat-label">Likes</div>
               </div>
             </div>
 
-            <div style={{ display: 'flex', gap: '10px' }}>
+            {/* Divider */}
+            <div style={{ borderTop: '1px solid var(--border)' }} />
+
+            {/* CTAs */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
               <a
-                href={PROFILE_STATS.githubUrl}
+                href={CREATOR.githubUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="btn-behance"
-                style={{ flex: 1, justifyContent: 'center', fontSize: '0.86rem' }}
+                className="btn-primary"
+                style={{ justifyContent: 'center', width: '100%' }}
               >
-                <GithubIcon size={16} /> Follow on GitHub
+                <GithubIcon size={16} /> View GitHub Profile
+              </a>
+              <a
+                href={`${CREATOR.githubUrl}?tab=repositories`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-outline"
+                style={{ justifyContent: 'center', width: '100%' }}
+              >
+                <ExternalLink size={15} /> All Repositories
               </a>
             </div>
           </div>

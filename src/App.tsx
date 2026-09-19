@@ -4,7 +4,7 @@ import { HeroBanner } from './components/HeroBanner';
 import { ProjectGrid } from './components/ProjectGrid';
 import { ProjectModal } from './components/ProjectModal';
 import { Footer } from './components/Footer';
-import { PROJECTS } from './data/projects';
+import { PROJECTS, CREATOR } from './data/projects';
 import type { Project } from './data/projects';
 
 export function App() {
@@ -13,58 +13,45 @@ export function App() {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [likedProjects, setLikedProjects] = useState<Record<string, boolean>>({});
 
-  // Filter projects dynamically
   const filteredProjects = useMemo(() => {
     return PROJECTS.filter((proj) => {
-      // Category match
-      const matchCategory = activeCategory === 'all' || proj.category === activeCategory;
-      
-      // Search match
+      const matchCat = activeCategory === 'all' || proj.category === activeCategory;
       const q = searchQuery.toLowerCase().trim();
-      const matchSearch =
-        !q ||
-        proj.title.toLowerCase().includes(q) ||
-        proj.subtitle.toLowerCase().includes(q) ||
-        proj.description.toLowerCase().includes(q) ||
-        proj.language.toLowerCase().includes(q) ||
-        proj.tags.some((t) => t.toLowerCase().includes(q));
-
-      return matchCategory && matchSearch;
+      const matchSearch = !q
+        || proj.title.toLowerCase().includes(q)
+        || proj.subtitle.toLowerCase().includes(q)
+        || proj.description.toLowerCase().includes(q)
+        || proj.language.toLowerCase().includes(q)
+        || proj.tags.some((t) => t.toLowerCase().includes(q));
+      return matchCat && matchSearch;
     });
   }, [searchQuery, activeCategory]);
 
-  // Total appreciations counter
   const totalAppreciations = useMemo(() => {
-    const baseSum = PROJECTS.reduce((acc, p) => acc + p.appreciations, 0);
-    const addedLikes = Object.values(likedProjects).filter(Boolean).length;
-    return baseSum + addedLikes;
+    const base = PROJECTS.reduce((acc, p) => acc + p.appreciations, 0);
+    const extra = Object.values(likedProjects).filter(Boolean).length;
+    return base + extra;
   }, [likedProjects]);
 
   const handleToggleLike = (projectId: string, e: React.MouseEvent) => {
     e.stopPropagation();
-    setLikedProjects((prev) => ({
-      ...prev,
-      [projectId]: !prev[projectId]
-    }));
+    setLikedProjects((prev) => ({ ...prev, [projectId]: !prev[projectId] }));
   };
 
-  // Modal Next/Prev navigation
-  const handleNextProject = () => {
+  const handleNext = () => {
     if (!selectedProject) return;
-    const currentIndex = filteredProjects.findIndex((p) => p.id === selectedProject.id);
-    const nextIndex = (currentIndex + 1) % filteredProjects.length;
-    setSelectedProject(filteredProjects[nextIndex]);
+    const i = filteredProjects.findIndex((p) => p.id === selectedProject.id);
+    setSelectedProject(filteredProjects[(i + 1) % filteredProjects.length]);
   };
 
-  const handlePrevProject = () => {
+  const handlePrev = () => {
     if (!selectedProject) return;
-    const currentIndex = filteredProjects.findIndex((p) => p.id === selectedProject.id);
-    const prevIndex = (currentIndex - 1 + filteredProjects.length) % filteredProjects.length;
-    setSelectedProject(filteredProjects[prevIndex]);
+    const i = filteredProjects.findIndex((p) => p.id === selectedProject.id);
+    setSelectedProject(filteredProjects[(i - 1 + filteredProjects.length) % filteredProjects.length]);
   };
 
   return (
-    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+    <>
       <Navbar
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
@@ -73,52 +60,46 @@ export function App() {
         totalAppreciations={totalAppreciations}
       />
 
-      <main style={{ flex: 1 }}>
-        <HeroBanner />
+      <HeroBanner />
 
-        {/* Section Header */}
-        <div style={{
-          maxWidth: '1440px',
-          margin: '0 auto 20px auto',
-          padding: '0 24px',
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center'
-        }}>
-          <div>
-            <h2 style={{
-              fontFamily: 'var(--font-heading)',
-              fontSize: '1.6rem',
-              fontWeight: 800,
-              color: '#ffffff'
-            }}>
-              Featured Creative Work
+      {/* Main content */}
+      <main>
+        <div className="container" style={{ padding: '32px 24px 0' }}>
+          {/* Section heading */}
+          <div style={{ marginBottom: '20px', display: 'flex', alignItems: 'baseline', gap: '10px' }}>
+            <h2 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.3rem', fontWeight: 800, color: 'var(--text)' }}>
+              {activeCategory === 'all' ? 'All Projects' : filteredProjects[0]?.categoryLabel || 'Projects'}
             </h2>
-            <p style={{ color: 'var(--text-muted)', fontSize: '0.88rem' }}>
-              Showing {filteredProjects.length} of {PROJECTS.length} repositories from @Generis2001
-            </p>
+            <span style={{ fontSize: '0.82rem', color: 'var(--text-muted)' }}>
+              {filteredProjects.length} of {PROJECTS.length} from{' '}
+              <a href={CREATOR.githubUrl} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--blue)', textDecoration: 'none', fontWeight: 600 }}>
+                github.com/{CREATOR.name}
+              </a>
+            </span>
           </div>
-        </div>
 
-        <ProjectGrid
-          projects={filteredProjects}
-          onSelectProject={(proj) => setSelectedProject(proj)}
-          likedProjects={likedProjects}
-          onToggleLike={handleToggleLike}
-        />
+          <ProjectGrid
+            projects={filteredProjects}
+            onSelectProject={setSelectedProject}
+            likedProjects={likedProjects}
+            onToggleLike={handleToggleLike}
+          />
+        </div>
       </main>
 
       <Footer />
 
-      <ProjectModal
-        project={selectedProject}
-        onClose={() => setSelectedProject(null)}
-        onNextProject={handleNextProject}
-        onPrevProject={handlePrevProject}
-        isLiked={selectedProject ? !!likedProjects[selectedProject.id] : false}
-        onToggleLike={handleToggleLike}
-      />
-    </div>
+      {selectedProject && (
+        <ProjectModal
+          project={selectedProject}
+          onClose={() => setSelectedProject(null)}
+          onNextProject={handleNext}
+          onPrevProject={handlePrev}
+          isLiked={!!likedProjects[selectedProject.id]}
+          onToggleLike={handleToggleLike}
+        />
+      )}
+    </>
   );
 }
 

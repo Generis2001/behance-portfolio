@@ -1,6 +1,6 @@
 import React from 'react';
 import { Search, Eye, Heart, Sparkles } from 'lucide-react';
-import { PROFILE_STATS } from '../data/projects';
+import { CREATOR } from '../data/projects';
 import { GithubIcon } from './Icons';
 
 interface NavbarProps {
@@ -12,11 +12,11 @@ interface NavbarProps {
 }
 
 const CATEGORIES = [
-  { id: 'all', label: 'All Projects' },
+  { id: 'all', label: 'All Work' },
   { id: 'web3', label: 'Web3 & GenLayer' },
   { id: 'ai', label: 'AI & Agents' },
   { id: 'contracts', label: 'Smart Contracts' },
-  { id: 'fullstack', label: 'Fullstack Apps' },
+  { id: 'fullstack', label: 'Fullstack' },
   { id: 'games', label: 'UI & Games' },
 ];
 
@@ -31,157 +31,126 @@ export const Navbar: React.FC<NavbarProps> = ({
     <header style={{
       position: 'sticky',
       top: 0,
-      zIndex: 100,
-      background: 'rgba(8, 10, 15, 0.88)',
-      backdropFilter: 'blur(16px)',
-      borderBottom: '1px solid var(--border-color)',
+      zIndex: 200,
+      background: 'rgba(255,255,255,0.97)',
+      backdropFilter: 'blur(12px)',
+      borderBottom: '1px solid var(--border)',
     }}>
-      <div style={{
-        maxWidth: '1440px',
-        margin: '0 auto',
-        padding: '14px 24px',
+      {/* Top row */}
+      <div className="container" style={{
         display: 'flex',
         alignItems: 'center',
-        justifyContent: 'space-between',
-        gap: '20px'
+        gap: '20px',
+        padding: '12px 24px',
       }}>
-        {/* Left Branding */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
-          <div style={{
-            background: 'var(--behance-blue)',
-            color: '#fff',
-            fontWeight: 900,
-            fontSize: '1.25rem',
-            padding: '6px 14px',
-            borderRadius: 'var(--radius-sm)',
-            letterSpacing: '0.05em',
+        {/* Logo / Name */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexShrink: 0 }}>
+          <img
+            src={CREATOR.avatar}
+            alt={CREATOR.name}
+            style={{ width: '32px', height: '32px', borderRadius: '50%', border: '2px solid var(--border)' }}
+          />
+          <span style={{
             fontFamily: 'var(--font-heading)',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '6px',
-            boxShadow: '0 4px 14px rgba(0,87,255,0.4)'
+            fontWeight: 800,
+            fontSize: '1.1rem',
+            color: 'var(--text)',
+            letterSpacing: '-0.01em'
           }}>
-            BĒ <span style={{ opacity: 0.65, fontWeight: 400 }}>|</span> GENERIS
-          </div>
-
-          {/* Quick GitHub Badge */}
-          <a
-            href={PROFILE_STATS.githubUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn-secondary"
-            style={{ fontSize: '0.82rem', padding: '6px 14px' }}
-          >
-            <GithubIcon size={15} />
-            github.com/Generis2001
-          </a>
+            {CREATOR.name}
+          </span>
+          <span style={{ color: 'var(--text-dim)', fontSize: '1rem' }}>·</span>
+          <span style={{
+            fontFamily: 'var(--font-body)',
+            fontSize: '0.83rem',
+            color: 'var(--text-muted)',
+            fontWeight: 500
+          }}>
+            Portfolio
+          </span>
         </div>
 
-        {/* Center Search Input */}
-        <div style={{ flex: '1', maxWidth: '420px', position: 'relative' }}>
-          <Search
-            size={17}
-            style={{
-              position: 'absolute',
-              left: '14px',
-              top: '50%',
-              transform: 'translateY(-50%)',
-              color: 'var(--text-dim)'
-            }}
-          />
+        {/* Spacer */}
+        <div style={{ flex: 1 }} />
+
+        {/* Search */}
+        <div style={{ position: 'relative', width: '320px' }}>
+          <Search size={16} style={{
+            position: 'absolute', left: '12px', top: '50%',
+            transform: 'translateY(-50%)', color: 'var(--text-muted)'
+          }} />
           <input
             type="text"
-            placeholder="Search projects by name, technology, or tag..."
+            placeholder="Search projects…"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             style={{
               width: '100%',
-              padding: '9px 16px 9px 40px',
+              padding: '8px 14px 8px 36px',
               background: 'var(--bg-surface)',
-              border: '1px solid var(--border-color)',
+              border: '1.5px solid var(--border)',
               borderRadius: 'var(--radius-full)',
-              color: 'var(--text-main)',
-              fontSize: '0.88rem',
+              color: 'var(--text)',
+              fontSize: '0.86rem',
               fontFamily: 'var(--font-body)',
               outline: 'none',
-              transition: 'var(--transition-fast)'
+              transition: 'var(--transition)'
             }}
-            onFocus={(e) => e.target.style.borderColor = 'var(--behance-blue)'}
-            onBlur={(e) => e.target.style.borderColor = 'var(--border-color)'}
+            onFocus={(e) => { e.target.style.borderColor = 'var(--blue)'; e.target.style.background = '#fff'; }}
+            onBlur={(e) => { e.target.style.borderColor = 'var(--border)'; e.target.style.background = 'var(--bg-surface)'; }}
           />
         </div>
 
-        {/* Right Stats & Contact */}
+        {/* Stats */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '16px',
-            background: 'rgba(255,255,255,0.03)',
-            padding: '6px 16px',
-            borderRadius: 'var(--radius-full)',
-            border: '1px solid var(--border-color)'
-          }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.84rem', color: 'var(--text-muted)' }}>
-              <Eye size={15} color="#3b82f6" />
-              <span>{(PROFILE_STATS.projectViews / 1000).toFixed(1)}k Views</span>
-            </div>
-            <div style={{ width: '1px', height: '14px', background: 'var(--border-color)' }} />
-            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.84rem', color: 'var(--text-muted)' }}>
-              <Heart size={15} color="#ff2a85" fill="#ff2a85" />
-              <span>{totalAppreciations} Likes</span>
-            </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '5px', fontSize: '0.82rem', color: 'var(--text-muted)' }}>
+            <Eye size={14} />
+            <span>{(CREATOR.totalViews / 1000).toFixed(1)}k views</span>
           </div>
-
-          <a
-            href="mailto:contact@generis2001.dev"
-            className="btn-behance"
-            style={{ fontSize: '0.85rem', padding: '8px 18px' }}
-          >
-            <Sparkles size={15} />
-            Hire / Collaborate
-          </a>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '5px', fontSize: '0.82rem', color: 'var(--text-muted)' }}>
+            <Heart size={14} />
+            <span>{totalAppreciations.toLocaleString()} appreciations</span>
+          </div>
         </div>
+
+        {/* GitHub CTA */}
+        <a
+          href={CREATOR.githubUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="btn-outline"
+          style={{ flexShrink: 0 }}
+        >
+          <GithubIcon size={15} /> Follow
+        </a>
+
+        <a
+          href={`mailto:hello@generis2001.dev`}
+          className="btn-primary"
+          style={{ flexShrink: 0 }}
+        >
+          <Sparkles size={15} /> Work Together
+        </a>
       </div>
 
-      {/* Category Pills Bar */}
-      <div style={{
-        maxWidth: '1440px',
-        margin: '0 auto',
-        padding: '10px 24px 14px 24px',
+      {/* Category Tab Filter Row */}
+      <div className="container" style={{
         display: 'flex',
         alignItems: 'center',
-        gap: '10px',
+        gap: '24px',
+        borderTop: '1px solid var(--border)',
         overflowX: 'auto',
-        borderTop: '1px solid rgba(255,255,255,0.04)'
+        padding: '0 24px',
       }}>
-        <span style={{ fontSize: '0.78rem', color: 'var(--text-dim)', textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 600, marginRight: '6px' }}>
-          Explore:
-        </span>
-        {CATEGORIES.map((cat) => {
-          const isActive = activeCategory === cat.id;
-          return (
-            <button
-              key={cat.id}
-              onClick={() => setActiveCategory(cat.id)}
-              style={{
-                padding: '6px 16px',
-                borderRadius: 'var(--radius-full)',
-                border: isActive ? '1px solid var(--behance-blue)' : '1px solid var(--border-color)',
-                background: isActive ? 'var(--behance-blue)' : 'var(--bg-surface)',
-                color: isActive ? '#ffffff' : 'var(--text-muted)',
-                fontSize: '0.83rem',
-                fontFamily: 'var(--font-heading)',
-                fontWeight: isActive ? 700 : 500,
-                cursor: 'pointer',
-                whiteSpace: 'nowrap',
-                transition: 'var(--transition-fast)'
-              }}
-            >
-              {cat.label}
-            </button>
-          );
-        })}
+        {CATEGORIES.map((cat) => (
+          <button
+            key={cat.id}
+            className={`filter-tab ${activeCategory === cat.id ? 'active' : ''}`}
+            onClick={() => setActiveCategory(cat.id)}
+          >
+            {cat.label}
+          </button>
+        ))}
       </div>
     </header>
   );
