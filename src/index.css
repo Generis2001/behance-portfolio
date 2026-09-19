@@ -1,0 +1,235 @@
+:root {
+  --bg-dark: #080a0f;
+  --bg-surface: #0f131d;
+  --bg-card: #151a26;
+  --bg-card-hover: #1c2333;
+  --border-color: #242c3f;
+  --border-glow: #3b82f6;
+  
+  --behance-blue: #0057ff;
+  --behance-blue-hover: #0047cc;
+  --accent-purple: #8b5cf6;
+  --accent-pink: #ff2a85;
+  --accent-cyan: #00f0ff;
+  --accent-emerald: #10b981;
+  --accent-gold: #f59e0b;
+
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+  --text-dim: #64748b;
+
+  --font-heading: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-code: 'Fira Code', monospace;
+
+  --shadow-card: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+  --shadow-glow: 0 0 25px rgba(0, 87, 255, 0.25);
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-full: 9999px;
+  
+  --transition-fast: 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-smooth: 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--bg-dark);
+  color: var(--text-main);
+  font-family: var(--font-body);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+  overflow-x: hidden;
+  background-image: 
+    radial-gradient(circle at 15% 15%, rgba(0, 87, 255, 0.08) 0%, transparent 40%),
+    radial-gradient(circle at 85% 65%, rgba(139, 92, 246, 0.06) 0%, transparent 40%),
+    linear-gradient(to bottom, rgba(8, 10, 15, 0.9), #080a0f);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-dark);
+}
+::-webkit-scrollbar-thumb {
+  background: #242c3f;
+  border-radius: 5px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--behance-blue);
+}
+
+/* Behance Button Utilities */
+.btn-behance {
+  background: var(--behance-blue);
+  color: #ffffff;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 0.95rem;
+  padding: 10px 22px;
+  border-radius: var(--radius-full);
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: var(--transition-fast);
+  box-shadow: 0 4px 15px rgba(0, 87, 255, 0.3);
+  text-decoration: none;
+}
+.btn-behance:hover {
+  background: var(--behance-blue-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 87, 255, 0.5);
+}
+
+.btn-secondary {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text-main);
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 0.95rem;
+  padding: 10px 20px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--border-color);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: var(--transition-fast);
+  backdrop-filter: blur(10px);
+  text-decoration: none;
+}
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: var(--text-muted);
+  transform: translateY(-2px);
+}
+
+/* Category Pill Badges */
+.pill-badge {
+  font-family: var(--font-heading);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 4px 12px;
+  border-radius: var(--radius-full);
+  background: rgba(0, 87, 255, 0.15);
+  color: #60a5fa;
+  border: 1px solid rgba(0, 87, 255, 0.3);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.pill-badge.web3 {
+  background: rgba(139, 92, 246, 0.15);
+  color: #c084fc;
+  border-color: rgba(139, 92, 246, 0.3);
+}
+.pill-badge.ai {
+  background: rgba(0, 240, 255, 0.15);
+  color: #67e8f9;
+  border-color: rgba(0, 240, 255, 0.3);
+}
+.pill-badge.pink {
+  background: rgba(255, 42, 133, 0.15);
+  color: #f472b6;
+  border-color: rgba(255, 42, 133, 0.3);
+}
+
+/* Card Hover Animation */
+.behance-card {
+  background: var(--bg-card);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+  overflow: hidden;
+  transition: var(--transition-smooth);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+.behance-card:hover {
+  transform: translateY(-8px);
+  border-color: rgba(59, 130, 246, 0.5);
+  box-shadow: 0 16px 35px -10px rgba(0, 0, 0, 0.7), var(--shadow-glow);
+}
+
+/* Modal Overlay Animation */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(5, 7, 12, 0.85);
+  backdrop-filter: blur(16px);
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 24px;
+  animation: fadeIn 0.25s ease-out;
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.modal-content {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  max-width: 960px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8);
+  animation: scaleUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+}
+@keyframes scaleUp {
+  from { opacity: 0; transform: scale(0.94); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* Heart Appreciation Animation */
+.heart-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: var(--text-muted);
+  padding: 8px 16px;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 0.88rem;
+  transition: var(--transition-fast);
+}
+.heart-btn:hover, .heart-btn.liked {
+  background: rgba(255, 42, 133, 0.15);
+  border-color: rgba(255, 42, 133, 0.5);
+  color: var(--accent-pink);
+  transform: scale(1.05);
+}
+
+/* Grid layout */
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 28px;
+}
+@media (max-width: 768px) {
+  .projects-grid {
+    grid-template-columns: 1fr;
+  }
+}
